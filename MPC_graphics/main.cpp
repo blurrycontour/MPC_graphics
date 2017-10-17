@@ -8,7 +8,7 @@ using namespace sf;
 //#define SAVE_IMG
 
 
-const int dispRatio = 15;
+int dispRatio = 15;
 int Lx;
 int Ly;
 int Lz;
@@ -21,9 +21,13 @@ Color outlineColor_n = Color(255, 255, 255, 255);	//Outline Color
 
 int main(int argc, char** argv)
 {
+	if (argc > 1)
+		if (stoi(argv[1]) != 0)
+			dispRatio = stoi(argv[1]);
+
 	char* anim_path;
-	if (argc == 2)
-		anim_path = argv[1];
+	if (argc > 2)
+		anim_path = argv[2];
 	else
 		anim_path = "../../anim.txt";
 
@@ -64,18 +68,21 @@ int main(int argc, char** argv)
 	SolventParticles.setRadius(radius);
 	SolventParticles.setFillColor(particleColor);
 
-	CircleShape MonomerParticles;
-	MonomerParticles.setRadius(radius_n);
-	MonomerParticles.setFillColor(particleColor_n);
-	MonomerParticles.setOutlineThickness(-radius_n*0.1);
-	MonomerParticles.setOutlineColor(outlineColor_n);
-	MonomerParticles.setOrigin(radius_n, radius_n);
-	CircleShape MonomerParticles_E;
-	MonomerParticles_E.setRadius(radius_n);
-	MonomerParticles_E.setFillColor(Color(255,20,20,255));
-	MonomerParticles_E.setOutlineThickness(-radius_n*0.1);
-	MonomerParticles_E.setOutlineColor(outlineColor_n);
-	MonomerParticles_E.setOrigin(radius_n, radius_n);
+	CircleShape* MonomerParticles = new CircleShape[N];
+	for (int i = 0; i < N; i++)
+	{
+		if (i==0)
+			MonomerParticles[i].setFillColor(Color(255,50,50,255));
+		else if (i == N-1)
+			MonomerParticles[i].setFillColor(Color(50, 255, 50, 255));
+		else
+			MonomerParticles[i].setFillColor(particleColor_n);
+
+		MonomerParticles[i].setRadius(radius_n);
+		MonomerParticles[i].setOutlineThickness(-radius_n*0.1);
+		MonomerParticles[i].setOutlineColor(outlineColor_n);
+		MonomerParticles[i].setOrigin(radius_n, radius_n);
+	}
 	
 	CircleShape Boundary;
 	Boundary.setRadius(dispRatio * Lz / 2);
@@ -110,7 +117,10 @@ int main(int argc, char** argv)
 		while (renderWindow.pollEvent(event))
 		{
 			if (event.type == Event::Closed)
+			{
 				renderWindow.close();
+				return 0;
+			}
 			else if (event.type == Event::KeyPressed)
 			{
 				switch (event.key.code)
@@ -139,29 +149,19 @@ int main(int argc, char** argv)
 			switch (display_mode)
 			{
 			case 1:
-				if ((i == 0) || (i == N - 1))
-					MonomerParticles_E.setPosition(particle[1] * dispRatio, particle[2] * dispRatio);
-				else
-					MonomerParticles.setPosition(particle[1] * dispRatio, particle[2] * dispRatio);
+				MonomerParticles[i].setPosition(particle[1] * dispRatio, particle[2] * dispRatio);
 				break;
 			case 2:
-				if ((i == 0) || (i == N - 1))
-					MonomerParticles_E.setPosition(particle[2] * dispRatio, particle[0] * dispRatio);
-				else
-					MonomerParticles.setPosition(particle[2] * dispRatio, particle[0] * dispRatio);
+				MonomerParticles[i].setPosition(particle[2] * dispRatio, particle[0] * dispRatio);
 				break;
 			case 3:
-				if ((i == 0) || (i == N - 1))
-					MonomerParticles_E.setPosition(particle[0] * dispRatio, particle[1] * dispRatio);
-				else
-					MonomerParticles.setPosition(particle[0] * dispRatio, particle[1] * dispRatio);
+				MonomerParticles[i].setPosition(particle[0] * dispRatio, particle[1] * dispRatio);
 				break;
 			default:
-				MonomerParticles.setPosition(particle[1] * dispRatio, particle[2] * dispRatio); 
+				MonomerParticles[i].setPosition(particle[1] * dispRatio, particle[2] * dispRatio); 
 				break;
 			}
-			renderWindow.draw(MonomerParticles);
-			renderWindow.draw(MonomerParticles_E);
+			renderWindow.draw(MonomerParticles[i]);
 		}
 		
 		renderWindow.display();
@@ -191,7 +191,7 @@ int main(int argc, char** argv)
 	lineX.rotate(90);*/
 
 	anim_file.close();
-	getchar();
+	//getchar();
 
 	return 0;
 }

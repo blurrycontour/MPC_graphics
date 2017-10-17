@@ -1,7 +1,6 @@
 ﻿  main.cpp
-main.cpp(70): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-main.cpp(76): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-main.cpp(81): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-main.cpp(85): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-main.cpp(130): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+main.cpp(82): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+main.cpp(88): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+main.cpp(92): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+main.cpp(140): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
   MPC_graphics.vcxproj -> C:\Users\Aditya Singh\Desktop\MPC_graphics\x64\MPC_graphics.exe
